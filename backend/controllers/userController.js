@@ -5,14 +5,12 @@ const bcrypt = require("bcryptjs");
 const verificationEmail = require("../emailTemplates/verificationEmail");
 const util = require("util");
 
-
 // Secret key for JWT (replace with your own secret key)
-const JWT_SECRET = 'mySuperSecretJwtKey12345'; // Hardcoded JWT secret
+const JWT_SECRET = 'mySuperSecretJwtKey12345';
 
 const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
-
-  console.log("Request body:", req.body);
+  console.log("Register request body:", req.body);
 
   if (!name || !email || !password) {
     console.error("Missing required fields");
@@ -20,67 +18,56 @@ const registerUser = async (req, res) => {
   }
 
   try {
-    // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
+      console.log("User already exists:", existingUser);
       return res.status(400).json({ message: "User with this email already exists" });
     }
 
-    // Hash the password before saving
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log("Password hashed successfully");
 
-    // Create a new user instance with hashed password and verification token
+    const verificationToken = jwt.sign({ email }, JWT_SECRET, { expiresIn: '1h' });
     const newUser = new User({
       name,
       email,
       password: hashedPassword,
-      verificationToken: jwt.sign({ email }, JWT_SECRET, { expiresIn: '1h' })
+      verificationToken
     });
 
-    // Save the user to the database
     await newUser.save();
+    console.log("User saved successfully:", newUser);
 
-    // Respond with success message and user data
     res.status(201).json({
       message: "User registered successfully",
       user: { name: newUser.name, email: newUser.email }
     });
-
   } catch (error) {
     console.error("Error registering user:", error);
     res.status(500).json({ message: "Failed to register user. Please try again." });
   }
 };
 
-
-
-
 const loginUser = async (req, res) => {
-  const JWT_SECRET = 'mySuperSecretJwtKey12345'; // Same as in registerUser
   const { email, password } = req.body;
-  console.log("Login attempt:", { email, password }); 
+  console.log("Login attempt with:", { email, password });
 
   try {
-    // Find the user by email
     const user = await User.findOne({ email });
-    console.log("User found:", user ? user.email : "User not found");
+    console.log("User lookup result:", user ? `Found user: ${user.email}` : "User not found");
 
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
 
-    // Check if password matches
     const isPasswordMatch = await bcrypt.compare(password, user.password);
-    console.log("Password match:", isPasswordMatch);
+    console.log("Password match result:", isPasswordMatch);
 
     if (!isPasswordMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // Generate a JWT token
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, {
-      expiresIn: "30d",
-    });
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "30d" });
     console.log("JWT token generated:", token);
 
     return res.status(200).json({ token });
@@ -90,22 +77,23 @@ const loginUser = async (req, res) => {
   }
 };
 
-
 const verifyEmail = async (req, res) => {
   const { token } = req.params;
+  console.log("Email verification attempt with token:", token);
 
   try {
-    // Verify the token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findOne({
-      email: decoded.email,
-      verificationToken: token,
-    });
+    const decoded = jwt.verify(token, JWT_SECRET);
+    console.log("Decoded token:", decoded);
+
+    const user = await User.findOne({ email: decoded.email, verificationToken: token });
+    console.log("User found for verification:", user ? user.email : "No matching user");
 
     if (user) {
       user.isVerified = true;
-      user.verificationToken = null; // Clear the token after verification
+      user.verificationToken = null;
       await user.save();
+      console.log("User email verified and saved");
+
       res.status(200).json({ message: "Email verified successfully" });
     } else {
       res.status(400).json({ message: "Invalid verification link" });
@@ -117,27 +105,31 @@ const verifyEmail = async (req, res) => {
 };
 
 const getUserById = async (req, res) => {
+  console.log("Getting user by ID:", req.params.id);
+
   try {
-    const user = await User.findById(req.params.id).select("-password"); // Exclude password field
+    const user = await User.findById(req.params.id).select("-password");
+    console.log("User found:", user);
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
     res.json(user);
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching user by ID:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
 
 const updateProfile = async (req, res) => {
-  try {
-    
+  const { email, name, password, height, weight, gender, age } = req.body;
+  console.log("Profile update request:", req.body);
 
-    const { email, name, password, height, weight, gender, age } = req.body;
+  try {
     const user = await User.findOne({ email });
+    console.log("User found for update:", user ? user.email : "No matching user");
 
     if (!user) {
-      
       return res.status(404).json({ message: "User not found" });
     }
 
@@ -149,14 +141,16 @@ const updateProfile = async (req, res) => {
 
     if (req.file) {
       user.profileImage = `/uploads/${req.file.filename.replace(/\\/g, '/')}`;
-      
+      console.log("Profile image path updated:", user.profileImage);
     }
 
     if (password) {
       user.password = await bcrypt.hash(password, 10);
+      console.log("Password updated");
     }
 
     const updatedUser = await user.save();
+    console.log("User profile updated:", updatedUser);
 
     res.json({
       _id: updatedUser._id,
@@ -169,16 +163,16 @@ const updateProfile = async (req, res) => {
       age: updatedUser.age,
     });
   } catch (error) {
-    console.error('Error updating profile:', error);
-    res.status(500).json({ message: 'Error updating profile', error: error.message });
+    console.error("Error updating profile:", error);
+    res.status(500).json({ message: "Error updating profile", error: error.message });
   }
 };
 
 const contactUs = async (req, res) => {
   const { name, email, message } = req.body;
+  console.log("Contact form submission:", { name, email, message });
 
   try {
-    // Create a transporter object
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -187,10 +181,9 @@ const contactUs = async (req, res) => {
       },
     });
 
-    // Email content
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: "ftracker60@gmail.com", // The email address you want to receive contact form submissions
+      to: "ftracker60@gmail.com",
       subject: "New Contact Form Submission",
       html: `
         <h1>New Contact Form Submission</h1>
@@ -200,19 +193,13 @@ const contactUs = async (req, res) => {
       `,
     };
 
-    // Send email
     await transporter.sendMail(mailOptions);
+    console.log("Contact form email sent");
 
-    res
-      .status(200)
-      .json({ message: "Your message has been sent successfully!" });
+    res.status(200).json({ message: "Your message has been sent successfully!" });
   } catch (error) {
     console.error("Error sending contact form email:", error);
-    res
-      .status(500)
-      .json({
-        message: "Failed to send your message. Please try again later.",
-      });
+    res.status(500).json({ message: "Failed to send your message. Please try again later." });
   }
 };
 
