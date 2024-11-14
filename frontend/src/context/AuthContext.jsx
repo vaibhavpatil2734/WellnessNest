@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import {jwtDecode} from "jwt-decode"; // Default import for decoding JWT
+import { jwtDecode } from "jwt-decode"; // Default import for decoding JWT
 import axios from "axios"; // For making API calls
 
 const AuthContext = createContext();
@@ -16,24 +16,26 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem("jwttoken");
     if (token) {
       const decodedToken = jwtDecode(token); // Decode the JWT
-      fetchUser(decodedToken.id); // Fetch user using the decoded id
+      const userId = decodedToken.id; // Get user ID from the token
       setIsAuthenticated(true);
+      fetchUser(userId); // Fetch user using the decoded ID
     }
   }, []);
 
   const fetchUser = async (userId) => {
     try {
-      const response = await axios.get(`/api/users/${userId}`);
+      const response = await axios.get(`http://localhost:5000/api/users/${userId}`);
+      // Assuming the response contains user data in the form of { username, email, etc. }
       setUser({
         ...response.data,
-        profileImage: response.data.profileImage || null,
-        height: response.data.height || "",
-        weight: response.data.weight || "",
-        gender: response.data.gender || "",
-        age: response.data.age || "",
+        profileImage: response.data.profileImage || "/default-profile.png",
+        height: response.data.height || "N/A",
+        weight: response.data.weight || "N/A",
+        gender: response.data.gender || "N/A",
+        age: response.data.age || "N/A",
       });
     } catch (error) {
-      console.error("Failed to fetch user:", error);
+      console.error("Failed to fetch user data:", error);
     }
   };
 
@@ -41,7 +43,8 @@ export const AuthProvider = ({ children }) => {
     try {
       localStorage.setItem("jwttoken", token);
       const decodedToken = jwtDecode(token);
-      await fetchUser(decodedToken.id); // Fetch user using the decoded id
+      const userId = decodedToken.id;
+      await fetchUser(userId); // Fetch user using the decoded ID
       setIsAuthenticated(true);
     } catch (error) {
       console.error("Failed to log in:", error);

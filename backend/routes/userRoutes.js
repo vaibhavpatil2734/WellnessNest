@@ -5,24 +5,12 @@ const {
   registerUser,
   loginUser,
   verifyEmail,
-  getUserById, // Ensure this function is imported
-  updateProfile,
+  getUserById, 
+  updateUserProfile,
   contactUs
 } = require("../controllers/userController");
 
 const router = express.Router();
-
-// Configure Multer for file upload
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/') // Make sure this directory exists
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname))
-  }
-});
-
-const upload = multer({ storage: storage });
 
 // Register route (with email verification)
 router.post("/register", registerUser);
@@ -35,9 +23,8 @@ router.get("/verify-email/:token", verifyEmail);
 
 router.get("/:id", getUserById);
 
-// Update profile route with file upload
-router.put("/update-profile", upload.single('profileImage'), updateProfile);
 
 router.post("/contact", contactUs);
+router.put("/updateUserProfile", updateUserProfile);
 
 module.exports = router;

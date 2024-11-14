@@ -120,54 +120,6 @@ const getUserById = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-
-const updateProfile = async (req, res) => {
-  const { email, name, password, height, weight, gender, age } = req.body;
-  console.log("Profile update request:", req.body);
-
-  try {
-    const user = await User.findOne({ email });
-    console.log("User found for update:", user ? user.email : "No matching user");
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    user.name = name || user.name;
-    user.height = height || user.height;
-    user.weight = weight || user.weight;
-    user.gender = gender || user.gender;
-    user.age = age || user.age;
-
-    if (req.file) {
-      user.profileImage = `/uploads/${req.file.filename.replace(/\\/g, '/')}`;
-      console.log("Profile image path updated:", user.profileImage);
-    }
-
-    if (password) {
-      user.password = await bcrypt.hash(password, 10);
-      console.log("Password updated");
-    }
-
-    const updatedUser = await user.save();
-    console.log("User profile updated:", updatedUser);
-
-    res.json({
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      profileImage: updatedUser.profileImage,
-      height: updatedUser.height,
-      weight: updatedUser.weight,
-      gender: updatedUser.gender,
-      age: updatedUser.age,
-    });
-  } catch (error) {
-    console.error("Error updating profile:", error);
-    res.status(500).json({ message: "Error updating profile", error: error.message });
-  }
-};
-
 const contactUs = async (req, res) => {
   const { name, email, message } = req.body;
   console.log("Contact form submission:", { name, email, message });
@@ -203,11 +155,41 @@ const contactUs = async (req, res) => {
   }
 };
 
+const updateUserProfile = async (req, res) => {
+  try {
+    const { userId, username, email, height, weight, gender, age } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update the user's profile data
+    user.username = username || user.username;
+    user.email = email || user.email;
+    user.height = height || user.height;
+    user.weight = weight || user.weight;
+    user.gender = gender || user.gender;
+    user.age = age || user.age;
+
+    // Save the updated user data
+    await user.save();
+
+    // Send a success response
+    res.status(200).json({ message: 'Profile updated successfully', user });
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+
 module.exports = {
   registerUser,
   loginUser,
+  updateUserProfile,
   verifyEmail,
   getUserById,
-  updateProfile,
   contactUs,
 };
