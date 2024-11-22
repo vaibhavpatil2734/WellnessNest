@@ -119,68 +119,80 @@ export default function ProfileLayout() {
 
         {editing ? (
           <form onSubmit={handleSubmit} className="edit-form">
-            <label htmlFor="username">Username</label>
-            <input
-              id="username"
-              type="text"
-              name="username"
-              value={profileData.username}
-              onChange={handleInputChange}
-              placeholder="Username"
-              className="edit-input"
-            />
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              value={profileData.email}
-              onChange={handleInputChange}
-              placeholder="Email"
-              className="edit-input"
-            />
-            <label htmlFor="height">Height (cm)</label>
-            <input
-              id="height"
-              type="text"
-              name="height"
-              value={profileData.height}
-              onChange={handleInputChange}
-              placeholder="Height"
-              className="edit-input"
-            />
-            <label htmlFor="weight">Weight (kg)</label>
-            <input
-              id="weight"
-              type="text"
-              name="weight"
-              value={profileData.weight}
-              onChange={handleInputChange}
-              placeholder="Weight"
-              className="edit-input"
-            />
-            <label htmlFor="gender">Gender</label>
-            <select
-              id="gender"
-              name="gender"
-              value={profileData.gender}
-              onChange={handleInputChange}
-              className="edit-input"
-            >
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
-            <label htmlFor="age">Age</label>
-            <input
-              id="age"
-              type="number"
-              name="age"
-              value={profileData.age}
-              onChange={handleInputChange}
-              placeholder="Age"
-              className="edit-input"
-            />
+            <div className="form-group">
+              <label htmlFor="username">Username</label>
+              <input
+                id="username"
+                type="text"
+                name="username"
+                value={profileData.username}
+                onChange={handleInputChange}
+                placeholder="Username"
+                className="edit-input"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input
+                id="email"
+                type="email"
+                name="email"
+                value={profileData.email}
+                onChange={handleInputChange}
+                placeholder="Email"
+                className="edit-input"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="height">Height (cm)</label>
+              <input
+                id="height"
+                type="text"
+                name="height"
+                value={profileData.height}
+                onChange={handleInputChange}
+                placeholder="Height"
+                className="edit-input"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="weight">Weight (kg)</label>
+              <input
+                id="weight"
+                type="text"
+                name="weight"
+                value={profileData.weight}
+                onChange={handleInputChange}
+                placeholder="Weight"
+                className="edit-input"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="gender">Gender</label>
+              <select
+                id="gender"
+                name="gender"
+                value={profileData.gender}
+                onChange={handleInputChange}
+                className="edit-input"
+              >
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor="age">Age</label>
+              <input
+                id="age"
+                type="number"
+                name="age"
+                value={profileData.age}
+                onChange={handleInputChange}
+                placeholder="Age"
+                className="edit-input"
+              />
+            </div>
             <button type="submit" className="submit-button">Save</button>
           </form>
         ) : (

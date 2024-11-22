@@ -2,183 +2,259 @@
 
 /* Profile container */
 .profile-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-color: #181818;
-    padding: 30px;
-    color: #fff;
-  }
-  
-  /* Profile card styling */
-  .profile-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #232323;
-    border-radius: 15px;
-    padding: 40px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-    width: 350px;
-    text-align: center;
-    transform: translateY(0);
-    animation: fadeIn 1s ease-in-out, hoverEffect 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .profile-card:hover {
-    transform: translateY(-10px);
-  }
-  
-  /* Profile image container */
-  .profile-image-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-bottom: 30px;
-    background-color: #333;
-  }
-  
-  /* Profile image styling */
-  .profile-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .profile-icon {
-    color: #888;
-    font-size: 100px;
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .profile-image-container:hover .profile-image,
-  .profile-image-container:hover .profile-icon {
-    transform: scale(1.1);
-  }
-  
-  /* Profile info styling */
-  .profile-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
-  
-  /* Styling for user info (username, email, etc.) */
-  .user-info {
-    font-size: 18px;
-    margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #121212; /* Darker background for the whole page */
+  padding: 30px;
+  color: #e0e0e0; /* Lighter text color */
+}
+
+/* Profile card styling */
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #1e1e1e; /* Darker background for card */
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5); /* Softer shadow */
+  width: 350px;
+  text-align: center;
+  transform: translateY(0);
+  animation: fadeIn 1s ease-in-out, hoverEffect 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.profile-card:hover {
+  transform: translateY(-10px);
+}
+
+/* Profile image container */
+.profile-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 30px;
+  background-color: #333333; /* Darker container background */
+}
+
+/* Profile image styling */
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease-in-out;
+}
+
+.profile-icon {
+  color: #888; /* Lighter gray for icon */
+  font-size: 100px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.profile-image-container:hover .profile-image,
+.profile-image-container:hover .profile-icon {
+  transform: scale(1.1);
+}
+
+/* Profile info styling */
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Styling for user info (username, email, etc.) */
+.user-info {
+  font-size: 18px;
+  margin: 10px 0;
+  opacity: 0;
+  animation: fadeInUp 1s ease-in-out forwards;
+  display: flex;
+  align-items: center;
+}
+
+.username {
+  font-size: 28px;
+  font-weight: bold;
+  color: #ffd700; /* Gold for username */
+  margin-bottom: 10px;
+}
+
+.email {
+  color: #b0bec5; /* Light gray-blue for email */
+}
+
+.height, .weight, .gender, .age {
+  color: #b0bec5; /* Light gray-blue for additional info */
+  margin-bottom: 12px;
+}
+
+.icon {
+  margin-right: 10px;
+  color: #ff9800; /* Orange for icons */
+  font-size: 22px;
+}
+
+/* Error and loading text */
+.error-message,
+.loading-text {
+  color: #ff5722; /* Red-Orange for error message */
+  font-size: 24px;
+  text-align: center;
+}
+
+.loading-text {
+  margin-top: 50px;
+  font-weight: bold;
+}
+
+.error-message p {
+  margin-top: 50px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  0% {
     opacity: 0;
-    animation: fadeInUp 1s ease-in-out forwards;
-    display: flex;
-    align-items: center;
   }
-  
-  .username {
-    font-size: 28px;
-    font-weight: bold;
-    color: #ffeb3b;
-    margin-bottom: 10px;
+  100% {
+    opacity: 1;
   }
-  
-  .email {
-    color: #9e9e9e;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
   }
-  
-  .height, .weight, .gender, .age {
-    color: #bdbdbd;
-    margin-bottom: 12px;
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .icon {
-    margin-right: 10px;
-    color: #ff9800;
-    font-size: 22px;
+}
+
+@keyframes hoverEffect {
+  0% {
+    transform: scale(1);
   }
-  
-  /* Error and loading text */
-  .error-message,
-  .loading-text {
-    color: #ff7f50;
-    font-size: 24px;
-    text-align: center;
+  100% {
+    transform: scale(1.05);
   }
-  
-  .loading-text {
-    margin-top: 50px;
-    font-weight: bold;
-  }
-  
-  .error-message p {
-    margin-top: 50px;
-  }
-  
-  /* Animations */
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-  
-  @keyframes fadeInUp {
-    0% {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  @keyframes hoverEffect {
-    0% {
-      transform: scale(1);
-    }
-    100% {
-      transform: scale(1.05);
-    }
-  }
-  
-  /* Profile Editing Form */
+}
+
+/* Profile Editing Form */
 .edit-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .edit-input {
-    margin: 10px 0;
-    padding: 8px;
-    width: 250px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    background-color: #333;
-    color: white;
-  }
-  
-  .save-button, .edit-button {
-    padding: 10px 20px;
-    margin-top: 15px;
-    background-color: #ff9800;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .save-button:hover, .edit-button:hover {
-    background-color: #ff5722;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.edit-input {
+  margin: 10px 0;
+  padding: 8px;
+  width: 250px;
+  border-radius: 5px;
+  border: 1px solid #666; /* Light gray border */
+  background-color: #333333; /* Dark background for input */
+  color: #e0e0e0; /* Light text for input */
+}
+
+.save-button,
+.edit-button {
+  padding: 10px 20px;
+  margin-top: 15px;
+  background-color: #ff9800;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.save-button:hover,
+.edit-button:hover {
+  background-color: #ff5722; /* Darker red-orange on hover */
+}
+
+/* General Styling for Profile Container */
+.profile-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.profile-card {
+  background: #1c1c1c; /* Darker card background */
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 500px;
+}
+
+.profile-image-container {
+  display: flex;
+  justify-content: center;
+}
+
+.profile-icon {
+  font-size: 80px;
+  color: #00bcd4; /* Light blue for icon */
+}
+
+.profile-info-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.info-icon {
+  margin-right: 10px;
+}
+
+.edit-button,
+.submit-button {
+  background-color: #00bcd4; /* Light blue for buttons */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.submit-button {
+  margin-left: 20px;
+}
+
+.edit-input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #888; /* Slightly lighter border for input */
+  border-radius: 5px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.loading-text {
+  text-align: center;
+  font-size: 18px;
+  color: #00bcd4; /* Light blue for loading text */
+}
+
+.error-message {
+  text-align: center;
+  font-size: 18px;
+  color: #e53935; /* Red for error messages */
+}
