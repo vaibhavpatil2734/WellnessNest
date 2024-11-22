@@ -67,7 +67,8 @@ export default function ProfileLayout() {
     }
 
     try {
-      const userId = user.id; // Get the user ID from context
+      const userId = user.id; 
+      alert(user.id,"user id")// Get the user ID from context
       const genderValue = gender.toLowerCase(); // Convert gender to lowercase
 
       const profileDataToUpdate = {
