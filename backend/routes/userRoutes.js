@@ -25,6 +25,6 @@ router.get("/:id", getUserById);
 
 
 router.post("/contact", contactUs);
-router.put("/updateUserProfile", updateUserProfile);
+router.post("/updateUserProfile", updateUserProfile);
 
 module.exports = router;

@@ -157,29 +157,63 @@ const contactUs = async (req, res) => {
 
 const updateUserProfile = async (req, res) => {
   try {
-    const { userId, username, email, height, weight, gender, age } = req.body;
+    const { email, name, height, weight, gender, age } = req.body;
 
-    const user = await User.findById(userId);
+    // Check for missing required fields
+    if (!email || !name || !height || !weight || !gender || !age) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    // Ensure gender is valid
+    const validGenders = ['male', 'female', 'other'];
+    if (gender && !validGenders.includes(gender.toLowerCase())) {
+      return res.status(400).json({ message: "Invalid gender value. Valid options are 'male', 'female', or 'other'" });
+    }
+
+    // Find user by email
+    const user = await User.findOne({ email });
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
     // Update the user's profile data
-    user.username = username || user.username;
-    user.email = email || user.email;
+    user.name = name || user.name;
     user.height = height || user.height;
     user.weight = weight || user.weight;
-    user.gender = gender || user.gender;
+    user.gender = gender ? gender.toLowerCase() : user.gender;  // Ensure gender is stored as lowercase
     user.age = age || user.age;
 
     // Save the updated user data
     await user.save();
 
-    // Send a success response
     res.status(200).json({ message: 'Profile updated successfully', user });
   } catch (error) {
-    console.error('Error updating profile:', error);
-    res.status(500).json({ message: 'Server error' });
+    // Handle validation error separately
+    if (error.name === 'ValidationError') {
+      console.error('Validation error:', error);  // Log full error for debugging
+      return res.status(400).json({
+        message: "Validation error",
+        errors: error.errors,
+      });
+    }
+
+    // Handle MongoDB specific errors like database connection issues
+    if (error.name === 'MongoError') {
+      console.error('MongoDB error:', error);  // Log full error for debugging
+      return res.status(500).json({
+        message: 'Database error occurred',
+        error: error.message,
+      });
+    }
+
+    // Log any other unexpected errors for further investigation
+    console.error('Unexpected server error:', error);  // Log full error for debugging
+    res.status(500).json({
+      message: 'Server error',
+      error: error.message,
+      stack: error.stack,  // Include error stack trace for debugging
+    });
   }
 };
 

@@ -22,6 +22,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['male', 'female', 'other'],
     default: null,
+    set: (value) => value ? value.toLowerCase() : null, // Ensure gender is stored in lowercase
   },
   age: {
     type: Number,
@@ -30,4 +31,3 @@ const userSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("User", userSchema);
-
