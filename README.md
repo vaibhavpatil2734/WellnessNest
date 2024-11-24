@@ -44,7 +44,7 @@
 
 ## 📸 **Project Screenshot**
 
-![WellnessNest Dashboard](https://via.placeholder.com/900x400.png?text=WellnessNest+Dashboard)
+![WellnessNest Dashboard](frontend/screenShots/image.png?text=WellnessNest+Dashboard)
 
 ---
 
