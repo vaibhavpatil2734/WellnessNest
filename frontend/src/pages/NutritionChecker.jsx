@@ -64,7 +64,7 @@ const NutritionChecker = () => {
         <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
           <input
             type="text"
-            placeholder="Enter food item"
+            placeholder="Enter food eg (1 apple)"
             value={isFoodItem}
             onChange={handleInputChange}
             className="py-2 px-4 appearance-none border border-gray-500 rounded-md md:text-xl text-base focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-700 text-white"
