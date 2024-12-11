@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const Main = () => {
   const { isAuthenticated } = useAuth(); // Get authentication state
+  const [isFirstVisit, setIsFirstVisit] = useState(true);
 
+  useEffect(() => {
+    if (isFirstVisit) {
+      alert('Welcome! This site is under development. For the best experience, please use desktop view.');
+      setIsFirstVisit(false);
+    }
+  }, [isFirstVisit]);
   return (
     <div className="bg-[#181c24] text-white flex flex-col items-center gap-10 w-[90%] m-auto py-10">
       <div className="flex flex-col items-center justify-center md:grid md:grid-cols-2 gap-8 mt-10">
