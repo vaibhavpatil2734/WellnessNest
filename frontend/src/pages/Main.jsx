@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-
+import "./profileLayout.css";
 const Main = () => {
   const { isAuthenticated } = useAuth(); // Get authentication state
   const [isFirstVisit, setIsFirstVisit] = useState(true);
@@ -17,6 +17,9 @@ const Main = () => {
       <div className="flex flex-col items-center justify-center md:grid md:grid-cols-2 gap-8 mt-10">
         <div className="flex flex-col items-start gap-4 animate-slideInFromLeft">
           <h1 className="text-5xl font-bold text-teal-400">WellnessNest</h1>
+          <p className="note">
+          Note: This site is under development. For the best experience, use a desktop view.
+        </p>
           <p className="text-3xl font-semibold text-gray-300">
             Track your fitness journey, monitor your diet, and set personalized goals.
           </p>
