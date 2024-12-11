@@ -10,13 +10,19 @@ const VerifyEmail = () => {
   useEffect(() => {
     const verifyEmail = async () => {
       try {
-        const response = await axios.get(`/api/users/verify-email/${token}`);
-        setMessage(response.data.message);
+        const response = await fetch(`https://wellnessnest.onrender.com/api/users/verify-email/${token}`);
+  
+        if (!response.ok) {
+          throw new Error(await response.text());
+        }
+  
+        const data = await response.json();
+        setMessage(data.message);
       } catch (error) {
-        setMessage(error.response.data.message || "An error occurred");
+        setMessage(error.message || "An error occurred");
       }
     };
-
+  
     verifyEmail();
   }, [token]);
 

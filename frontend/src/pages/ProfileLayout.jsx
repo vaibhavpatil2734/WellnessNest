@@ -82,7 +82,7 @@ export default function ProfileLayout() {
       };
 
       const response = await axios.post(
-        "http://localhost:5000/api/users/updateUserProfile",
+        "https://wellnessnest.onrender.com/api/users/updateUserProfile",
         profileDataToUpdate,
         {
           headers: {

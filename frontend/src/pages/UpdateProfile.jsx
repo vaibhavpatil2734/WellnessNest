@@ -67,16 +67,14 @@ const UpdateProfile = () => {
 
       
 
-      const response = await axios.put(
-        "/api/users/update-profile",
-        formDataToSend,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwttoken")}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await fetch("https://wellnessnest.onrender.com/api/users/update-profile", {
+        method: "PUT", // Use PUT method as required
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwttoken")}`,
+          "Content-Type": "multipart/form-data",
+        },
+        body: formDataToSend, // Send the form data in the body
+      });
 
        // Log the response
 

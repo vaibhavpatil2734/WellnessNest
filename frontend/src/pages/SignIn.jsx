@@ -19,7 +19,7 @@ const SignIn = () => {
     setLoading(true); // Start loading
     try {
       // Sending login request to the server with the email and password
-      const response = await axios.post("http://localhost:5000/api/users/login", {
+      const response = await axios.post("https://wellnessnest.onrender.com/api/users/login", {
         email,
         password,
       });
