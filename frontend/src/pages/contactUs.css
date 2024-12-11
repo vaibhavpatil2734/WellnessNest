@@ -1,111 +1,162 @@
 .contact-page {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #121212;
-    color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #121212;
+  color: #f0f0f0;
+}
+
+.contact-form-wrapper {
+  background-color: #1a1a1a;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  animation: slideIn 0.8s ease-out;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  margin: 20px;
+}
+
+/* Contact Title */
+.contact-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+/* Form Styling */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Contact Label */
+.contact-label {
+  font-weight: bold;
+}
+
+/* Input and Textarea */
+.contact-input,
+.contact-textarea {
+  width: 100%;
+  padding: 15px;
+  background-color: #333;
+  color: #f0f0f0;
+  border: 1px solid #555;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Input Focus */
+.contact-input:focus,
+.contact-textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Submit Button */
+.contact-button {
+  padding: 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.contact-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+/* Submitted Message Effect */
+.submitted {
+  color: #4caf50;
+  transform: scale(1.1);
+}
+
+/* Fade-in and Fade-out animations */
+.fade-in {
+  animation: fadeIn 0.6s ease-in;
+}
+
+.fade-out {
+  animation: fadeOut 0.6s forwards;
+}
+
+/* Keyframes */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
   }
-  
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
   .contact-form-wrapper {
-    background-color: #1a1a1a;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    animation: slideIn 0.8s ease-out;
-    max-width: 500px;
-    width: 100%;
-    text-align: center;
+    padding: 20px;
   }
   
   .contact-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-    transition: transform 0.3s ease, color 0.3s ease;
+    font-size: 20px;
   }
-  
-  .contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .contact-label {
-    font-weight: bold;
-  }
-  
+
   .contact-input,
-  .contact-textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    background-color: #333;
-    color: #f0f0f0;
-    border: 1px solid #555;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-  
-  .contact-input:focus,
-  .contact-textarea:focus {
-    border-color: #007bff;
-    outline: none;
+  .contact-textarea,
+  .contact-button {
+    padding: 12px;
   }
   
   .contact-button {
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-weight: bold;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-form-wrapper {
+    padding: 15px;
+    max-width: 90%;
   }
   
-  .contact-button:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
+  .contact-title {
+    font-size: 18px;
   }
-  
-  .submitted {
-    color: #4caf50;
-    transform: scale(1.1);
+
+  .contact-input,
+  .contact-textarea {
+    padding: 10px;
+    font-size: 16px;
   }
-  
-  .fade-in {
-    animation: fadeIn 0.6s ease-in;
+
+  .contact-button {
+    padding: 12px;
+    font-size: 18px;
   }
-  
-  .fade-out {
-    animation: fadeOut 0.6s forwards;
-  }
-  
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateY(-30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-  
-  @keyframes fadeOut {
-    0% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
-  }
-  
+}

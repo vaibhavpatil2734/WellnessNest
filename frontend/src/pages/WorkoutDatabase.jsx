@@ -37,7 +37,6 @@ const WorkoutDatabase = () => {
     }
   };
 
-  // Function to fetch the API status
   const fetchApiStatus = async () => {
     const options = {
       method: "GET",
@@ -50,14 +49,13 @@ const WorkoutDatabase = () => {
 
     try {
       const response = await axios.request(options);
-      setStatus(response.data.status || "Service operational"); // Set status with default message
+      setStatus(response.data.status || "Service operational");
     } catch (error) {
       console.error("Error fetching status:", error);
       setStatus("Error fetching status");
     }
   };
 
-  // Fetch the API status when the component mounts
   useEffect(() => {
     fetchApiStatus();
   }, []);
@@ -66,11 +64,11 @@ const WorkoutDatabase = () => {
     <div className="w-full flex flex-col justify-center items-center min-h-[60vh] gap-10 my-12 bg-gray-900">
       <div className="w-full flex flex-col justify-center items-center gap-6 max-w-4xl mx-auto p-6 bg-gray-800 shadow-xl rounded-lg">
         <h1 className="text-5xl font-extrabold text-center text-white">Find Your Perfect Exercise</h1>
-        <div className="flex gap-4 items-center justify-center">
+        <div className="flex flex-col items-center justify-center gap-4 sm:flex-row w-full">
           <select
             value={isExercise}
             onChange={handleSelectChange}
-            className="py-3 px-5 appearance-none border border-gray-600 rounded-md text-xl text-white bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="py-3 px-5 appearance-none border border-gray-600 rounded-md text-xl text-white bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 w-full sm:w-auto"
           >
             <option value="">Select a Muscle Group</option>
             <option value="back">Back</option>
@@ -86,12 +84,11 @@ const WorkoutDatabase = () => {
           </select>
           <button
             onClick={handleSearch}
-            className="bg-green-700 rounded-md py-3 px-6 text-xl text-white hover:bg-green-600 transform hover:scale-105 transition-all duration-200"
+            className="bg-green-700 rounded-md py-3 px-6 text-xl text-white hover:bg-green-600 transform hover:scale-105 transition-all duration-200 w-full sm:w-auto"
           >
             Search
           </button>
         </div>
-        {/* Loading and Error Indicator */}
         {isLoading ? (
           <p className="text-gray-400">Loading exercises...</p>
         ) : error ? (
@@ -101,12 +98,6 @@ const WorkoutDatabase = () => {
         ) : null}
       </div>
 
-      {/* Display the API Status */}
-      {status && (
-        <div className="w-full text-center py-4">
-          <h2 className="text-lg font-semibold text-gray-400">API Status: {status}</h2>
-        </div>
-      )}
 
       <div className="w-full">
         {exercises.length > 0 && (

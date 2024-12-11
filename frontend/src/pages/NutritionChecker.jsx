@@ -82,7 +82,7 @@ const NutritionChecker = () => {
 
       {nutritionResult && (
         <div className="w-full overflow-x-auto xl:flex md:items-center md:justify-center">
-          <table className="table-auto border-collapse border border-gray-500 min-w-[600px] bg-gray-700">
+          <table className="table-auto border-collapse border border-gray-500 min-w-[600px] bg-gray-700 hidden md:table">
             <thead>
               <tr>
                 <th className="border px-4 py-2 text-gray-300">Name</th>
@@ -112,6 +112,20 @@ const NutritionChecker = () => {
               </tr>
             </tbody>
           </table>
+          <div className="block md:hidden">
+            <ul className="bg-gray-700 border border-gray-500 p-4 rounded-md">
+              <li className="text-gray-300 py-2"><strong>Name:</strong> {nutritionResult.name || "N/A"}</li>
+              <li className="text-gray-300 py-2"><strong>Calories:</strong> {nutritionResult.calories || "N/A"}</li>
+              <li className="text-gray-300 py-2"><strong>Total Fat (g):</strong> {nutritionResult.totalFat || "N/A"}</li>
+              <li className="text-gray-300 py-2"><strong>Saturated Fat (g):</strong> {nutritionResult.saturatedFat || "N/A"}</li>
+              <li className="text-gray-300 py-2"><strong>Cholesterol (mg):</strong> {nutritionResult.cholesterol || "N/A"}</li>
+              <li className="text-gray-300 py-2"><strong>Sodium (mg):</strong> {nutritionResult.sodium || "N/A"}</li>
+              <li className="text-gray-300 py-2"><strong>Carbohydrates (g):</strong> {nutritionResult.carbohydrates || "N/A"}</li>
+              <li className="text-gray-300 py-2"><strong>Fiber (g):</strong> {nutritionResult.fiber || "N/A"}</li>
+              <li className="text-gray-300 py-2"><strong>Sugar (g):</strong> {nutritionResult.sugar || "N/A"}</li>
+              <li className="text-gray-300 py-2"><strong>Protein (g):</strong> {nutritionResult.protein || "N/A"}</li>
+            </ul>
+          </div>
         </div>
       )}
     </div>
