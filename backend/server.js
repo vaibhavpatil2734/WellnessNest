@@ -14,8 +14,8 @@ app.use(express.json());
 
 // CORS Middleware - Set allowed origin
 app.use(
-  cors({
-    origin: ['http://localhost:5173', 'https://wellnessnest.netlify.app'], // Use the correct frontend URL directly
+  cors({                          
+    origin: ['http://localhost:5173', 'https://wellnessnest1.netlify.app'], // Use the correct frontend URL directly
     methods: ["GET", "POST", "PUT", "DELETE"], // Allow common HTTP methods
     allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
   })
