@@ -6,36 +6,43 @@ WellnessNest is a comprehensive fitness platform built with the MERN stack, offe
 
 ## 🚀 Features
 
-- Explore Workout Library 🏋️‍♀️  
+- **Explore Workout Library 🏋️‍♀️**  
   Explore a vast collection of workout routines tailored to different fitness goals like weight loss, muscle gain, and endurance.
 
-- Monitor Diet 🥗  
+- **Monitor Diet 🥗**  
   Keep an eye on your nutrition with detailed diet logging and insights into your calorie, protein, and nutrient intake.
 
-- Analyze Nutrition 🍏  
+- **Analyze Nutrition 🍏**  
   Analyze the nutritional values of various foods, including calories, protein, fat, and more, to make informed dietary choices.
 
-- Calculate BMR 🔢  
+- **Calculate BMR 🔢**  
   Calculate your Basal Metabolic Rate (BMR) to optimize your fitness and nutrition plan for the best results.
 
-- Goal Setting 🎯  
+- **Goal Setting 🎯**  
   Set specific fitness goals and monitor your progress towards achieving them with clear, actionable insights.
+
+---
+
+## 🌐 Live Demo
+
+🚀 **Check out the live demo of the project here:**  
+**[https://wellnessnest.netlify.app](https://wellnessnest.netlify.app)**
 
 ---
 
 ## 🌐 Technologies Used
 
-- Frontend:  
+- **Frontend:**  
   - ReactJS ⚛️  
   - Redux (State Management) 🔄  
   - Bootstrap 4 & CSS (Styling) 🎨
 
-- Backend:  
+- **Backend:**  
   - Node.js & Express.js 🌐  
   - MongoDB (Database) 🗄️  
   - JWT Authentication 🔐
 
-- Others:  
+- **Others:**  
   - Chart.js 📊 (For graphical representation of progress)  
   - Axios (API calls) 🌍  
   - Bcrypt.js (Password Hashing) 🔑
@@ -52,7 +59,7 @@ WellnessNest is a comprehensive fitness platform built with the MERN stack, offe
 
 To set up this project locally, follow the steps below:
 
-1. Clone the repository:
+1. **Clone the repository:**  
    ```bash
    git clone https://github.com/your-username/WellnessNest.git
    cd WellnessNest
