@@ -155,67 +155,57 @@ const contactUs = async (req, res) => {
   }
 };
 
+
+// Update user profile with height & weight tracking
 const updateUserProfile = async (req, res) => {
   try {
     const { email, name, height, weight, gender, age } = req.body;
+    if (!email) return res.status(400).json({ message: "Email is required" });
 
-    // Check for missing required fields
-    if (!email || !name || !height || !weight || !gender || !age) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
-
-    // Ensure gender is valid
-    const validGenders = ['male', 'female', 'other'];
-    if (gender && !validGenders.includes(gender.toLowerCase())) {
-      return res.status(400).json({ message: "Invalid gender value. Valid options are 'male', 'female', or 'other'" });
-    }
-
-    // Find user by email
     const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: "User not found" });
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+    // Track changes only if height or weight is updated
+    const updateHistory = {};
+    if (height && height !== user.height) updateHistory.height = height;
+    if (weight && weight !== user.weight) updateHistory.weight = weight;
 
-    // Update the user's profile data
+    // Update user details
     user.name = name || user.name;
-    user.height = height || user.height;
-    user.weight = weight || user.weight;
-    user.gender = gender ? gender.toLowerCase() : user.gender;  // Ensure gender is stored as lowercase
+    user.gender = gender ? gender.toLowerCase() : user.gender;
     user.age = age || user.age;
+    if (height) user.height = height;
+    if (weight) user.weight = weight;
 
-    // Save the updated user data
+    // If height or weight changed, add entry to history
+    if (Object.keys(updateHistory).length > 0) {
+      user.history.push({ date: new Date(), ...updateHistory });
+    }
+
     await user.save();
-
-    res.status(200).json({ message: 'Profile updated successfully', user });
+    res.status(200).json({ message: "Profile updated successfully", user });
   } catch (error) {
-    // Handle validation error separately
-    if (error.name === 'ValidationError') {
-      console.error('Validation error:', error);  // Log full error for debugging
-      return res.status(400).json({
-        message: "Validation error",
-        errors: error.errors,
-      });
-    }
-
-    // Handle MongoDB specific errors like database connection issues
-    if (error.name === 'MongoError') {
-      console.error('MongoDB error:', error);  // Log full error for debugging
-      return res.status(500).json({
-        message: 'Database error occurred',
-        error: error.message,
-      });
-    }
-
-    // Log any other unexpected errors for further investigation
-    console.error('Unexpected server error:', error);  // Log full error for debugging
-    res.status(500).json({
-      message: 'Server error',
-      error: error.message,
-      stack: error.stack,  // Include error stack trace for debugging
-    });
+    res.status(500).json({ message: "Server error" });
   }
 };
+
+
+// Fetch user's height & weight progress history
+const getUserProgress = async (req, res) => {
+  try {
+    const { email } = req.params;
+    if (!email) return res.status(400).json({ message: "Email is required" });
+
+    const user = await User.findOne({ email }).select("history");
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.status(200).json({ history: user.history });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
 
 
 
@@ -226,4 +216,5 @@ module.exports = {
   verifyEmail,
   getUserById,
   contactUs,
+  getUserProgress,
 };

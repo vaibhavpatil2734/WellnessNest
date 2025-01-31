@@ -121,12 +121,7 @@ const AboutUs = () => {
             your fitness journey today!
           </motion.p>
           <div className="text-center">
-            <a
-              href="/register"
-              className="inline-block bg-blue-500 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-600 transition duration-300"
-            >
-              Get Started Now
-            </a>
+          
           </div>
         </motion.div>
       </div>
