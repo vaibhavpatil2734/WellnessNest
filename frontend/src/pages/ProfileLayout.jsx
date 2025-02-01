@@ -21,11 +21,12 @@ export default function ProfileLayout() {
     email: "",
     height: "",
     weight: "",
-    gender: "",
+    gender: "not selected",
     age: "",
   });
 
   useEffect(() => {
+    alert("profile alert")
     if (!isAuthenticated) {
       toast.info("Please log in to view your profile");
       setLoading(false);
@@ -81,8 +82,10 @@ export default function ProfileLayout() {
         age,
       };
 
-      const response = await axios.post(
-        "https://wellnessnest.onrender.com/api/users/updateUserProfile",
+      console.log(profileData)
+      const response = await axios.put(
+        // "https://wellnessnest.onrender.com/api/users/updateUserProfile",
+        "http://localhost:5000/api/users/update-profile",
         profileDataToUpdate,
         {
           headers: {
@@ -181,6 +184,7 @@ export default function ProfileLayout() {
                 onChange={handleInputChange}
                 className="edit-input"
               >
+                <option value="not selected">Not Selected</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
                 <option value="other">Other</option>

@@ -1,15 +1,15 @@
 const mongoose = require("mongoose");
 
 const historySchema = new mongoose.Schema({
-  date: { type: Date, default: Date.now }, // Timestamp for tracking changes
-  height: Number, // Stores height change
-  weight: Number, // Stores weight change
+  date: { type: Date, default: Date.now },
+  height: { type: Number, required: true },
+  weight: { type: Number, required: true },
 });
 
 const userSchema = new mongoose.Schema({
-  name: String,
+  name: { type: String, required: true },
   email: { type: String, unique: true, required: true },
-  password: String,
+  password: { type: String, required: true },
   isVerified: { type: Boolean, default: false },
   verificationToken: String,
   profileImage: { type: String, default: "" },
@@ -17,12 +17,12 @@ const userSchema = new mongoose.Schema({
   weight: { type: Number, default: null },
   gender: {
     type: String,
-    enum: ["male", "female", "other"],
-    default: null,
-    set: (value) => (value ? value.toLowerCase() : null), // Store gender in lowercase
+    enum: ["not selected", "male", "female", "other"],
+    default: "not selected",
+    set: (value) => (value ? value.toLowerCase() : "not selected"),
   },
   age: { type: Number, default: null },
-  history: [historySchema], // Store height & weight change history
+  history: [historySchema],
 });
 
 module.exports = mongoose.model("User", userSchema);

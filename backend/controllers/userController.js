@@ -156,54 +156,59 @@ const contactUs = async (req, res) => {
 };
 
 
-// Update user profile with height & weight tracking
+
 const updateUserProfile = async (req, res) => {
   try {
+    console.log("Profile update request received");
     const { email, name, height, weight, gender, age } = req.body;
     if (!email) return res.status(400).json({ message: "Email is required" });
 
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    // Track changes only if height or weight is updated
-    const updateHistory = {};
-    if (height && height !== user.height) updateHistory.height = height;
-    if (weight && weight !== user.weight) updateHistory.weight = weight;
-
-    // Update user details
-    user.name = name || user.name;
-    user.gender = gender ? gender.toLowerCase() : user.gender;
-    user.age = age || user.age;
-    if (height) user.height = height;
-    if (weight) user.weight = weight;
-
-    // If height or weight changed, add entry to history
-    if (Object.keys(updateHistory).length > 0) {
-      user.history.push({ date: new Date(), ...updateHistory });
+    let updated = false;
+    if (name) user.name = name;
+    if (gender) user.gender = gender.toLowerCase();
+    if (age !== undefined) user.age = age;
+    
+    // Update height and weight with tracking
+    if ((typeof height === "number" && height !== user.height) ||
+        (typeof weight === "number" && weight !== user.weight)) {
+      user.history.push({ date: new Date(), height: height || user.height, weight: weight || user.weight });
+      if (typeof height === "number") user.height = height;
+      if (typeof weight === "number") user.weight = weight;
+      updated = true;
     }
 
+    if (!updated) return res.status(200).json({ message: "No changes detected", user });
+    console.log("Before store",user)
     await user.save();
     res.status(200).json({ message: "Profile updated successfully", user });
   } catch (error) {
+    console.error("Error updating profile:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
 
 
-// Fetch user's height & weight progress history
+
+
 const getUserProgress = async (req, res) => {
   try {
-    const { email } = req.params;
+    const { email } = req.query;
     if (!email) return res.status(400).json({ message: "Email is required" });
 
-    const user = await User.findOne({ email }).select("history");
+    const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
 
     res.status(200).json({ history: user.history });
   } catch (error) {
+    console.error("Error fetching progress:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
+
+
 
 
 
