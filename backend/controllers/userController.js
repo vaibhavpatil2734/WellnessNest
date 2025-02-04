@@ -157,38 +157,38 @@ const contactUs = async (req, res) => {
 
 
 
-const updateUserProfile = async (req, res) => {
-  try {
-    console.log("Profile update request received");
-    const { email, name, height, weight, gender, age } = req.body;
-    if (!email) return res.status(400).json({ message: "Email is required" });
+// const updateUserProfile = async (req, res) => {
+//   try {
+//     console.log("Profile update request received");
+//     const { email, name, height, weight, gender, age } = req.body;
+//     if (!email) return res.status(400).json({ message: "Email is required" });
 
-    const user = await User.findOne({ email });
-    if (!user) return res.status(404).json({ message: "User not found" });
+//     const user = await User.findOne({ email });
+//     if (!user) return res.status(404).json({ message: "User not found" });
 
-    let updated = false;
-    if (name) user.name = name;
-    if (gender) user.gender = gender.toLowerCase();
-    if (age !== undefined) user.age = age;
+//     let updated = false;
+//     if (name) user.name = name;
+//     if (gender) user.gender = gender.toLowerCase();
+//     if (age !== undefined) user.age = age;
     
-    // Update height and weight with tracking
-    if ((typeof height === "number" && height !== user.height) ||
-        (typeof weight === "number" && weight !== user.weight)) {
-      user.history.push({ date: new Date(), height: height || user.height, weight: weight || user.weight });
-      if (typeof height === "number") user.height = height;
-      if (typeof weight === "number") user.weight = weight;
-      updated = true;
-    }
+//     // Update height and weight with tracking
+//     if ((typeof height === "number" && height !== user.height) ||
+//         (typeof weight === "number" && weight !== user.weight)) {
+//       user.history.push({ date: new Date(), height: height || user.height, weight: weight || user.weight });
+//       if (typeof height === "number") user.height = height;
+//       if (typeof weight === "number") user.weight = weight;
+//       updated = true;
+//     }
 
-    if (!updated) return res.status(200).json({ message: "No changes detected", user });
-    console.log("Before store",user)
-    await user.save();
-    res.status(200).json({ message: "Profile updated successfully", user });
-  } catch (error) {
-    console.error("Error updating profile:", error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
+//     if (!updated) return res.status(200).json({ message: "No changes detected", user });
+//     console.log("Before store",user)
+//     await user.save();
+//     res.status(200).json({ message: "Profile updated successfully", user });
+//   } catch (error) {
+//     console.error("Error updating profile:", error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
 
 
 
@@ -210,6 +210,28 @@ const getUserProgress = async (req, res) => {
 
 
 
+const updateUserProfile = async (req, res) => {
+  try {
+    console.log("Profile update request received");
+    const { email, name, height, weight, gender, age } = req.body;
+    if (!email) return res.status(400).json({ message: "Email is required" });
+
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    let updated = false;
+    if (name) user.name = name;
+    if (gender) user.gender = gender.toLowerCase();
+    if (age !== undefined) user.age = age;
+    
+  
+    await user.save();
+    res.status(200).json({ message: "Profile updated successfully", user });
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
 
 
