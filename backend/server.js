@@ -12,14 +12,15 @@ connectDB();
 const app = express();
 app.use(express.json());
 
-// CORS Middleware - Set allowed origin
+
 app.use(
-  cors({                          
-    origin: ['http://localhost:5173', 'https://wellnessnest.netlify.app'], // Use the correct frontend URL directly
-    methods: ["GET", "POST", "PUT", "DELETE"], // Allow common HTTP methods
-    allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
+  cors({
+    origin: "*", // Temporarily allow all origins (change later)
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
 
 // API Routes
 app.use("/api/users", userRoutes);
