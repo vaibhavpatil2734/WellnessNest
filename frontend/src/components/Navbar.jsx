@@ -32,7 +32,7 @@ const Navbar = () => {
       {/* Navbar */}
       <div className="w-full h-20 flex items-center justify-between px-4">
         {/* Logo */}
-        <div className="text-2xl font-bold text-white">WellnessNext</div>
+        <div className="text-2xl font-bold text-white">WellnessNest</div>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex gap-6">

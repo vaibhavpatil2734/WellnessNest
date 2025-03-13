@@ -26,7 +26,6 @@ export default function ProfileLayout() {
   });
 
   useEffect(() => {
-    alert("profile alert")
     if (!isAuthenticated) {
       toast.info("Please log in to view your profile");
       setLoading(false);
@@ -84,8 +83,8 @@ export default function ProfileLayout() {
 
       console.log(profileData)
       const response = await axios.put(
-        // "https://wellnessnest.onrender.com/api/users/updateUserProfile",
-        "http://localhost:5000/api/users/update-profile",
+        "https://wellnessnest.onrender.com/api/users/updateUserProfile",
+        // "http://localhost:5000/api/users/update-profile",
         profileDataToUpdate,
         {
           headers: {
