@@ -10,7 +10,6 @@ import {
 } from "react-icons/fa";
 import { toast } from "react-toastify";
 import axios from "axios";
-import "./profileLayout.css";
 
 export default function ProfileLayout() {
   const { user, isAuthenticated } = useAuth();
@@ -36,7 +35,7 @@ export default function ProfileLayout() {
           email: user.email || "",
           height: user.height || "",
           weight: user.weight || "",
-          gender: user.gender || "",
+          gender: user.gender || "not selected",
           age: user.age || "",
         });
       }
@@ -70,21 +69,17 @@ export default function ProfileLayout() {
     }
 
     try {
-      const genderValue = gender.toLowerCase();
-
       const profileDataToUpdate = {
         email,
         name: username,
         height,
         weight,
-        gender: genderValue,
+        gender: gender.toLowerCase(),
         age,
       };
 
-      console.log(profileData)
       const response = await axios.put(
         "https://wellnessnest.onrender.com/api/users/update-profile",
-        // "http://localhost:5000/api/users/update-profile",
         profileDataToUpdate,
         {
           headers: {
@@ -104,84 +99,146 @@ export default function ProfileLayout() {
     }
   };
 
-  if (loading) {
-    return <div className="loading-text">Loading...</div>;
-  }
-
-  if (!user) {
+  if (loading)
     return (
-      <div className="error-message">
-        <p>Please log in to view your profile.</p>
+      <div style={{ textAlign: "center", padding: "2rem", fontSize: "18px" }}>
+        Loading...
       </div>
     );
-  }
+
+  if (!user)
+    return (
+      <div style={{ textAlign: "center", padding: "2rem", fontSize: "18px" }}>
+        Please log in to view your profile.
+      </div>
+    );
+
+  const containerStyle = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "40px 20px",
+    background: "linear-gradient(to right, #e3f2fd, #fce4ec)",
+    minHeight: "100vh",
+  };
+
+  const cardStyle = {
+    background: "#ffffff",
+    borderRadius: "20px",
+    boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)",
+    padding: "30px 40px",
+    maxWidth: "500px",
+    width: "100%",
+  };
+
+  const iconStyle = {
+    fontSize: "80px",
+    color: "#4a90e2",
+    marginBottom: "20px",
+    textAlign: "center",
+  };
+
+  const formGroupStyle = {
+    marginBottom: "18px",
+  };
+
+  const labelStyle = {
+    display: "block",
+    fontWeight: "bold",
+    marginBottom: "6px",
+    color: "#333",
+  };
+
+  const inputStyle = {
+    width: "100%",
+    padding: "10px 12px",
+    borderRadius: "8px",
+    border: "1px solid #ccc",
+    fontSize: "16px",
+    outline: "none",
+  };
+
+  const buttonGroupStyle = {
+    display: "flex",
+    gap: "12px",
+    marginTop: "10px",
+  };
+
+  const buttonStyle = {
+    backgroundColor: "#4a90e2",
+    color: "white",
+    padding: "10px 16px",
+    border: "none",
+    borderRadius: "10px",
+    fontSize: "15px",
+    cursor: "pointer",
+    flex: 1,
+  };
+
+  const cancelButtonStyle = {
+    ...buttonStyle,
+    backgroundColor: "#e57373",
+  };
+
+  const infoItemStyle = {
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+    fontSize: "16px",
+    color: "#444",
+    background: "#f5f5f5",
+    padding: "10px 12px",
+    borderRadius: "10px",
+    marginBottom: "12px",
+  };
+
+  const infoIconStyle = {
+    color: "#4a90e2",
+  };
 
   return (
-    <div className="profile-container">
-      <div className="profile-card">
-        <div className="profile-image-container">
-          <FaUserCircle className="profile-icon" />
+    <div style={containerStyle}>
+      <div style={cardStyle}>
+        <div style={{ textAlign: "center" }}>
+          <FaUserCircle style={iconStyle} />
         </div>
 
         {editing ? (
-          <form onSubmit={handleSubmit} className="edit-form">
-            <div className="form-group">
-              <label htmlFor="username">Username</label>
-              <input
-                id="username"
-                type="text"
-                name="username"
-                value={profileData.username}
-                onChange={handleInputChange}
-                placeholder="Username"
-                className="edit-input"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input
-                id="email"
-                type="email"
-                name="email"
-                value={profileData.email}
-                onChange={handleInputChange}
-                placeholder="Email"
-                className="edit-input"
-                disabled // Email should not be editable
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="height">Height (cm)</label>
-              <input
-                id="height"
-                type="text"
-                name="height"
-                value={profileData.height}
-                onChange={handleInputChange}
-                placeholder="Height"
-                className="edit-input"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="weight">Weight (kg)</label>
-              <input
-                id="weight"
-                type="text"
-                name="weight"
-                value={profileData.weight}
-                onChange={handleInputChange}
-                placeholder="Weight"
-                className="edit-input"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="gender">Gender</label>
+          <form onSubmit={handleSubmit}>
+            {[
+              { id: "username", type: "text", label: "Username" },
+              { id: "email", type: "email", label: "Email", disabled: true },
+              { id: "height", type: "number", label: "Height (cm)" },
+              { id: "weight", type: "number", label: "Weight (kg)" },
+              { id: "age", type: "number", label: "Age" },
+            ].map(({ id, type, label, disabled }) => (
+              <div style={formGroupStyle} key={id}>
+                <label htmlFor={id} style={labelStyle}>
+                  {label}
+                </label>
+                <input
+                  id={id}
+                  type={type}
+                  name={id}
+                  value={profileData[id]}
+                  onChange={handleInputChange}
+                  style={inputStyle}
+                  placeholder={label}
+                  disabled={disabled}
+                />
+              </div>
+            ))}
+
+            <div style={formGroupStyle}>
+              <label htmlFor="gender" style={labelStyle}>
+                Gender
+              </label>
               <select
                 id="gender"
                 name="gender"
                 value={profileData.gender}
                 onChange={handleInputChange}
-                className="edit-input"
+                style={inputStyle}
               >
                 <option value="not selected">Not Selected</option>
                 <option value="male">Male</option>
@@ -189,49 +246,47 @@ export default function ProfileLayout() {
                 <option value="other">Other</option>
               </select>
             </div>
-            <div className="form-group">
-              <label htmlFor="age">Age</label>
-              <input
-                id="age"
-                type="number"
-                name="age"
-                value={profileData.age}
-                onChange={handleInputChange}
-                placeholder="Age"
-                className="edit-input"
-              />
+
+            <div style={buttonGroupStyle}>
+              <button type="submit" style={buttonStyle}>
+                Save
+              </button>
+              <button
+                type="button"
+                style={cancelButtonStyle}
+                onClick={() => setEditing(false)}
+              >
+                Cancel
+              </button>
             </div>
-            <button type="submit" className="submit-button">
-              Save
-            </button>
           </form>
         ) : (
-          <div className="profile-info">
-            <div className="profile-info-item">
-              <FaUserCircle className="info-icon" />
+          <div>
+            <div style={infoItemStyle}>
+              <FaUserCircle style={infoIconStyle} />
               <span>{profileData.username}</span>
             </div>
-            <div className="profile-info-item">
-              <FaRegEnvelope className="info-icon" />
+            <div style={infoItemStyle}>
+              <FaRegEnvelope style={infoIconStyle} />
               <span>{profileData.email}</span>
             </div>
-            <div className="profile-info-item">
-              <FaRulerCombined className="info-icon" />
+            <div style={infoItemStyle}>
+              <FaRulerCombined style={infoIconStyle} />
               <span>{profileData.height} cm</span>
             </div>
-            <div className="profile-info-item">
-              <FaWeightHanging className="info-icon" />
+            <div style={infoItemStyle}>
+              <FaWeightHanging style={infoIconStyle} />
               <span>{profileData.weight} kg</span>
             </div>
-            <div className="profile-info-item">
-              <FaTransgender className="info-icon" />
+            <div style={infoItemStyle}>
+              <FaTransgender style={infoIconStyle} />
               <span>{profileData.gender}</span>
             </div>
-            <div className="profile-info-item">
-              <FaBirthdayCake className="info-icon" />
+            <div style={infoItemStyle}>
+              <FaBirthdayCake style={infoIconStyle} />
               <span>{profileData.age} years</span>
             </div>
-            <button onClick={() => setEditing(true)} className="edit-button">
+            <button onClick={() => setEditing(true)} style={{ ...buttonStyle, marginTop: "15px" }}>
               Edit Profile
             </button>
           </div>
